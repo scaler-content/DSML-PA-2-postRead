@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Product Metrics I — Lecture 2</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-page:#F8FAFC;--bg-card:#FFFFFF;--bg-section:#F1F5F9;
+  --accent:#6366F1;--accent-dark:#4338CA;--accent-wash:#EEF2FF;
+  --blue:#0EA5E9;--green:#10B981;--amber:#F59E0B;--red:#EF4444;--purple:#8B5CF6;
+  --text-h:#0F172A;--text-b:#1E293B;--text-s:#64748B;--text-m:#94A3B8;
+  --border:#E2E8F0;--border-strong:#CBD5E1;
+  --r:8px;--rm:12px;--rl:16px;
+  --maxw:1440px;--pad:clamp(24px,4vw,72px);
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg-page:#0D1117;--bg-card:#161B27;--bg-section:#1A2235;
+  --text-h:#F1F5F9;--text-b:#CBD5E1;--text-s:#94A3B8;--text-m:#475569;
+  --border:#1E293B;--border-strong:#334155;
+}}
+:root[data-theme="dark"]{
+  --bg-page:#0D1117;--bg-card:#161B27;--bg-section:#1A2235;
+  --text-h:#F1F5F9;--text-b:#CBD5E1;--text-s:#94A3B8;--text-m:#475569;
+  --border:#1E293B;--border-strong:#334155;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 52px)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg-page);color:var(--text-b);line-height:1.65;font-size:16px}
+h1{font-size:clamp(2.2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.15}
+h2{font-size:clamp(1.4rem,2.2vw,1.75rem);font-weight:600;color:var(--text-h);line-height:1.3;margin-bottom:8px}
+h3{font-size:1.05rem;font-weight:600;color:var(--text-h);margin-bottom:6px}
+p{color:var(--text-b);line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+.sec{padding:64px 0}
+.sec-alt{background:var(--bg-section)}
+.measure{max-width:720px}
+/* HERO */
+.hero{background:var(--accent);padding:72px var(--pad) 84px;text-align:center}
+.hero-inner{max-width:var(--maxw);margin:0 auto}
+.hero-chip{display:inline-block;background:rgba(255,255,255,.18);color:#C7D2FE;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:20px}
+.hero-sub{font-size:clamp(1rem,1.4vw,1.2rem);color:#C7D2FE;max-width:640px;margin:18px auto 32px}
+.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero-badge{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28);padding:8px 18px;border-radius:20px;font-size:14px;font-weight:500}
+/* NAV */
+.snav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg-card);border-bottom:1px solid var(--border);z-index:100;overflow-x:auto;white-space:nowrap;padding:0 var(--pad)}
+.snav-inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:center;flex-wrap:nowrap}
+.snav a{padding:15px 15px;font-size:13.5px;font-weight:500;color:var(--text-s);display:inline-block;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.snav a:hover{color:var(--accent)}
+.snav a.on{color:var(--accent);border-bottom-color:var(--accent)}
+/* CARDS */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:24px}
+.callout{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;margin:16px 0}
+.callout p,.callout div{font-size:14.5px;color:var(--accent-dark)}
+.witty{background:var(--bg-section);border-left:3px solid var(--amber);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;font-size:14.5px;color:var(--text-s);font-style:italic;margin:20px 0}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.mod2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.g3,.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.g2,.g3,.g4,.mod2{grid-template-columns:1fr}.sec{padding:44px 0}.hero{padding:48px 20px 56px}}
+/* TAGS */
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.t-blue{background:#E0F2FE;color:#0369A1}.t-green{background:#D1FAE5;color:#065F46}
+.t-amber{background:#FEF3C7;color:#92400E}.t-red{background:#FEE2E2;color:#991B1B}
+.t-purple{background:#EDE9FE;color:#5B21B6}.t-indigo{background:var(--accent-wash);color:var(--accent-dark)}
+/* BTNS */
+.btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;font-family:inherit}
+.btn:hover{background:var(--accent-dark)}
+.btn:disabled{background:var(--border-strong);cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:var(--r);padding:9px 18px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+.btn-ghost:hover{background:var(--accent-wash)}
+.btn-ghost:disabled{color:var(--text-m);border-color:var(--border-strong);cursor:not-allowed}
+.btn-sm{padding:7px 14px;font-size:13px}
+.toollink{display:inline-flex;align-items:center;gap:8px;background:var(--accent-wash);color:var(--accent-dark);border:1px solid var(--border);border-radius:20px;padding:9px 16px;font-size:13.5px;font-weight:600;margin-top:6px}
+.toollink:hover{background:#E0E7FF}
+/* SLACK / STORY */
+.slack{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.slack-from{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.slack-msg{font-size:14.5px;color:var(--text-b)}
+/* STEP DOTS + NAVIGATOR */
+.dots{display:flex;align-items:center;margin-bottom:24px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--border-strong);flex-shrink:0;transition:background .2s}
+.dot.on{background:var(--accent)}.dot.done{background:var(--green)}
+.dot-line{height:2px;background:var(--border);flex:1}
+.cs{display:none}.cs.on{display:block}
+.cs .card{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:820px){.cs .card{grid-template-columns:1fr}}
+/* FUNNEL */
+.fs{border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;background:var(--bg-card)}
+.fsh{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-card);transition:background .15s}
+.fsh:hover{background:var(--bg-section)}
+.fl{width:34px;height:34px;border-radius:var(--r);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fb{display:none;padding:16px 18px;background:var(--bg-section);border-top:1px solid var(--border)}.fb.on{display:block}
+/* REVEAL */
+.rev-btn{width:100%;text-align:left;background:var(--bg-section);border:1px solid var(--border);border-radius:var(--r);padding:11px 16px;cursor:pointer;color:var(--accent);font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;transition:background .15s;font-family:inherit}
+.rev-btn:hover{background:var(--accent-wash)}
+.rev-body{display:none;margin-top:12px}.rev-body.on{display:block}
+/* ANALOGY */
+.analogy{display:grid;grid-template-columns:0.85fr 1.15fr;gap:0;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg-card)}
+@media(max-width:820px){.analogy{grid-template-columns:1fr}}
+.an-visual{padding:28px;display:flex;flex-direction:column;justify-content:center;gap:14px;color:#fff}
+.an-visual.star{background:linear-gradient(135deg,#6366F1,#0F172A)}
+.an-visual.army{background:linear-gradient(135deg,#8B5CF6,#4338CA)}
+.an-emoji{font-size:52px;line-height:1}
+.an-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.an-title{font-size:1.35rem;font-weight:700;color:#fff;line-height:1.25}
+.an-premise{font-size:14.5px;color:rgba(255,255,255,.9);line-height:1.6}
+.an-map{padding:24px 28px;display:flex;flex-direction:column;gap:2px}
+.an-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border)}
+.an-row:last-child{border-bottom:none}
+.an-ico{width:40px;height:40px;border-radius:10px;background:var(--bg-section);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.an-side{font-size:14px;color:var(--text-s);flex:1}
+.an-arrow{color:var(--text-m);font-weight:700;flex-shrink:0}
+.an-frame{font-size:14px;color:var(--text-h);font-weight:600;flex:1}
+/* PYRAMID */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0 20px}
+.pyr-band{color:#fff;border-radius:10px;padding:16px 20px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;width:100%;border:2px solid transparent}
+.pyr-band:hover{transform:translateY(-2px)}
+.pyr-band.on{box-shadow:0 0 0 3px var(--accent-wash),0 8px 22px rgba(15,23,42,.14)}
+.pyr-1{background:linear-gradient(135deg,#6366F1,#4338CA);max-width:440px}
+.pyr-2{background:linear-gradient(135deg,#0EA5E9,#0369A1);max-width:660px}
+.pyr-3{background:linear-gradient(135deg,#10B981,#047857);max-width:880px}
+.pyr-band .pk{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.pyr-band .pt{font-size:1.15rem;font-weight:700;margin-top:2px}
+.pyr-band .ps{font-size:12.5px;opacity:.92;margin-top:2px}
+.pyr-detail{display:none}.pyr-detail.on{display:block}
+/* QUIZ */
+.quiz{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:24px}
+.quiz .qtag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.quiz .qq{font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:16px}
+.qopts{display:flex;flex-direction:column;gap:10px}
+.qopt{text-align:left;background:var(--bg-section);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 16px;cursor:pointer;font-size:14px;color:var(--text-b);font-family:inherit;transition:all .15s;display:flex;gap:10px;align-items:flex-start}
+.qopt:hover{border-color:var(--accent)}
+.qopt .qk{font-weight:700;color:var(--text-s);flex-shrink:0}
+.qopt.correct{background:#D1FAE5;border-color:var(--green);color:#065F46}
+.qopt.correct .qk{color:var(--green)}
+.qopt.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B}
+.qopt.wrong .qk{color:var(--red)}
+.qexp{display:none;margin-top:14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;font-size:14px;color:var(--accent-dark)}
+.qexp.on{display:block}.qexp b{color:var(--text-h)}
+/* CLASSIFIER */
+.cls-row{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px}
+.cls-metric{font-size:14.5px;font-weight:600;color:var(--text-h);margin-bottom:12px}
+.cls-btns{display:flex;gap:8px;flex-wrap:wrap}
+.cls-btn{border:1.5px solid var(--border);background:var(--bg-section);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:500;color:var(--text-s);cursor:pointer;font-family:inherit;transition:all .15s}
+.cls-btn:hover{border-color:var(--accent);color:var(--accent)}
+.cls-btn.correct{background:#D1FAE5;border-color:var(--green);color:#065F46}
+.cls-btn.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B}
+.cls-note{display:none;margin-top:12px;font-size:13.5px;color:var(--text-s);padding-top:12px;border-top:1px solid var(--border)}
+.cls-note.on{display:block}
+/* TABLE */
+.vtable{width:100%;border-collapse:collapse;font-size:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);overflow:hidden}
+.vtable th,.vtable td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+.vtable thead th{background:var(--bg-section);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-s)}
+.vtable tr:last-child td{border-bottom:none}
+/* FIGURE */
+.fig{max-width:900px;margin:22px 0;border:1px solid var(--border);border-radius:var(--rm);overflow:hidden;background:var(--bg-card)}
+.fig img{display:block;width:100%;height:auto;background:var(--bg-section)}
+.fig figcaption{font-size:12.5px;color:var(--text-s);padding:10px 16px;border-top:1px solid var(--border);background:var(--bg-section)}
+/* POCKET */
+.pocket{background:#0F172A;border-radius:var(--rl);padding:36px}
+.pocket h3{color:#C7D2FE;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.prow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.pi{background:rgba(255,255,255,.1);border-radius:6px;padding:7px 13px;font-size:13.5px;color:#E2E8F0}
+.pi span{color:#818CF8;font-weight:700}
+/* TAKEAWAY */
+.tw{display:flex;gap:16px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--border)}
+.tw:last-child{border-bottom:none}
+.twn{width:30px;height:30px;background:var(--accent);color:#fff;border-radius:50%;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.iq-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:24px}
+.mini{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:20px}
+.mini .mk{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-chip">Lecture 2 · Product Analytics</div>
+    <h1>Product Metrics I</h1>
+    <p class="hero-sub">From "why did this number move?" to the sharper question: <em>which</em> numbers should we even be looking at?</p>
+    <div class="badges">
+      <span class="hero-badge">Vanity vs Actionable</span>
+      <span class="hero-badge">North Star Metric</span>
+      <span class="hero-badge">L1 → L2 Hierarchy</span>
+      <span class="hero-badge">5-Step Framework</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="snav">
+  <div class="snav-inner">
+    <a href="#recap">Recap</a>
+    <a href="#scene">The Scene</a>
+    <a href="#kpis">Metrics &amp; KPIs</a>
+    <a href="#vanity">Vanity vs Actionable</a>
+    <a href="#hierarchy">Hierarchy</a>
+    <a href="#classify">Classify It</a>
+    <a href="#questions">Question Types</a>
+    <a href="#framework">5-Step Framework</a>
+    <a href="#interview">Interview</a>
+    <a href="#pocket">Pocket Card</a>
+  </div>
+</nav>
+
+<!-- RECAP -->
+<section class="sec" id="recap">
+  <div class="wrap">
+    <div class="lbl">Where we left off</div>
+    <h2>Recap of Lecture 1</h2>
+    <p class="measure" style="margin-bottom:24px">Last class you built <strong>product sense</strong> — the judgment layer on top of your SQL, Python and Tableau. The through-line into today: last week you learned to <em>reason about</em> metrics; today you learn what a <em>good</em> metric actually is, and how to organise a whole set of them.</p>
+    <div class="g3">
+      <div class="mini"><div class="mk" style="background:var(--blue)">CRIED</div><h3>Diagnose a change</h3><p style="font-size:13.5px;color:var(--text-s)">Clarify, Rule Out, Internal &amp; External data — the diagnostic spine for "why did this move?"</p></div>
+      <div class="mini"><div class="mk" style="background:var(--purple)">TROP<span style="text-transform:lowercase">i</span>CS</div><h3>The internal checklist</h3><p style="font-size:13.5px;color:var(--text-s)">Time, Region, Other features, Platform, Cannibalization, Segmentation.</p></div>
+      <div class="mini"><div class="mk" style="background:var(--green)">AAAERR</div><h3>Define new-feature success</h3><p style="font-size:13.5px;color:var(--text-s)">Awareness, Acquisition, Activation, Engagement, Revenue, Retention + guardrails.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE -->
+<section class="sec sec-alt" id="scene">
+  <div class="wrap">
+    <div class="lbl">Setting the scene</div>
+    <h2>A Dashboard With 40 Charts and No Answer</h2>
+    <p class="measure" style="margin-bottom:24px">A week later, Aditi walks into a different kind of problem. Not "why did this number move?" but "which numbers should we even be looking at?"</p>
+
+    <div class="g2" style="gap:24px;align-items:stretch">
+      <div>
+        <div class="slack"><div class="slack-from">📣 Marketing</div><div class="slack-msg">"We just crossed <strong>2 million app downloads</strong> — huge quarter!"</div></div>
+        <div class="slack"><div class="slack-from">🎬 Content Team</div><div class="slack-msg">"Video uploads are climbing every week."</div></div>
+        <div class="slack"><div class="slack-from">🎧 Support</div><div class="slack-msg">"We track ticket volume — that's trending down, so we're good."</div></div>
+        <div class="slack" style="border-color:var(--red)"><div class="slack-from" style="color:var(--red)">📉 Quietly, in the background</div><div class="slack-msg">Repeat orders are slipping — and nobody's dashboard is pointing at it.</div></div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:28px;display:flex;flex-direction:column;justify-content:center;gap:16px">
+        <div style="font-size:38px">🧑‍💼</div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">The VP stops the meeting</div>
+        <p style="font-size:16px;color:var(--text-h);font-weight:600;line-height:1.5">"What is the one number we should all be rowing toward — and underneath it, what should each team actually watch?"</p>
+        <p style="font-size:14px;color:var(--text-s)">"2 million downloads" sounds impressive but tells nobody what to do next — plenty of those users opened the app once and vanished. What's missing isn't more data; it's a <strong>hierarchy of the right metrics</strong>: one guiding star, a few primary metrics that feed it, and granular supporting metrics underneath.</p>
+      </div>
+    </div>
+    <div class="witty">💬 "A wall of 40 charts isn't measurement — it's noise with a login. Today we turn it into one star and two tiers beneath it."</div>
+  </div>
+</section>
+
+<!-- METRICS & KPIs -->
+<section class="sec" id="kpis">
+  <div class="wrap">
+    <div class="lbl">Ground floor</div>
+    <h2>Metrics &amp; KPIs</h2>
+    <p class="measure" style="margin-bottom:28px">Start at the base: what exactly is a "metric," what makes one a "KPI," and why do interviewers care so much?</p>
+
+    <div class="g2" style="margin-bottom:24px">
+      <div class="card">
+        <div class="tag t-indigo" style="margin-bottom:10px">Product metric</div>
+        <p style="font-size:14.5px;margin-bottom:12px">A quantifiable data point a business tracks and analyses to evaluate the success of its product.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>Used to optimise product strategy for growth</li>
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>The right metrics lead to smarter decisions across development</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag t-green" style="margin-bottom:10px">KPI (Key Performance Indicator)</div>
+        <p style="font-size:14.5px;margin-bottom:12px">A metric important enough that the company holds itself <strong>accountable</strong> to it — quantifiable evidence of what's resonating with customers and what isn't.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--green)">→</span>Can relate to user needs, size, quality, growth, or comfort</li>
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--green)">→</span>The metric a leader puts on a slide and a team's bonus depends on</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-bottom:28px">
+      <div style="font-size:14.5px;font-weight:600;color:var(--text-h);margin-bottom:4px">Every metric is a data point — but not every data point earns "KPI" status</div>
+      <p>"Total button clicks" is a metric. "Weekly Active Users" is a KPI that Netflix, Spotify and Uber would restructure teams around. A KPI is simply the metric important enough to be held accountable to.</p>
+    </div>
+
+    <div class="g2">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">How companies use metrics</div>
+        <div class="g2" style="gap:8px">
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Set the product roadmap</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Evolve product strategy</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Forecast revenue</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Measure a feature's impact</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Understand user behaviour</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Evaluate a launch</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Segment the market</div>
+          <div style="background:var(--bg-section);border-radius:6px;padding:10px 12px;font-size:13px">Test product hypotheses</div>
+        </div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:20px;border-top:3px solid var(--accent)">
+        <div style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Why interviewers care</div>
+        <p style="font-size:14px;margin-bottom:10px">Metric-definition questions test whether you can:</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">1.</span>Understand the <strong>goal</strong> of a product</li>
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">2.</span>Trace the <strong>customer journey</strong></li>
+          <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">3.</span>Map both to a set of <strong>quantifiable measures</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VANITY VS ACTIONABLE -->
+<section class="sec sec-alt" id="vanity">
+  <div class="wrap">
+    <div class="lbl">Classifying metrics</div>
+    <h2>Vanity vs. Actionable</h2>
+    <p class="measure" style="margin-bottom:24px">There's no fixed taxonomy of metrics — but the most useful first cut is <strong>vanity</strong> vs. <strong>actionable</strong>, based on whether a number actually guides a decision.</p>
+
+    <div style="overflow-x:auto;margin-bottom:8px">
+      <table class="vtable">
+        <thead><tr><th>Aspect</th><th>Vanity metrics</th><th>Actionable metrics</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Nature</strong></td><td>Superficial — showcase positive but shallow numbers</td><td>Tied to the core goals of the business or product</td></tr>
+          <tr><td><strong>Emphasis</strong></td><td>Quantity over quality; little real insight</td><td>Quality over quantity; focus on critical data</td></tr>
+          <tr><td><strong>Actionability</strong></td><td>No direct link to actions that improve performance</td><td>Closely tied to specific improving actions</td></tr>
+          <tr><td><strong>Purpose</strong></td><td>"Ego metrics" — boost an ego with impressive numbers</td><td>Goal-oriented; track progress toward outcomes</td></tr>
+          <tr><td><strong>Examples</strong></td><td>Total visitors, followers, page views, downloads</td><td>Conversion rate, CAC, CLV, retention, revenue per user</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="witty" style="margin-top:14px">📊 A social-media influencer may have <strong>5M followers</strong> but drive a <strong>0.001% CTR</strong> when promoting a product. Big number, no decision — that's vanity in one line.</div>
+
+    <figure class="fig">
+      <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/131/original/ChatGPT_Image_Sep_9__2026__02_33_36_PM.png?1788944720" alt="Vanity vs actionable metrics" loading="lazy">
+      <figcaption>Vanity vs. actionable metrics — the numbers that only ever go up, versus the ones that tell you what to do next.</figcaption>
+    </figure>
+
+    <div class="quiz" style="margin-top:28px">
+      <div class="qtag">Quiz 1 · Vanity vs Actionable</div>
+      <div class="qq">A growth team celebrates crossing 10 million cumulative app downloads. As the data analyst, which metric would you push them to track instead, because it is <em>actionable</em> rather than <em>vanity</em>?</div>
+      <div class="qopts">
+        <button class="qopt" data-k="A" onclick="pickQ(this,'C')"><span class="qk">A</span>Total lifetime app downloads</button>
+        <button class="qopt" data-k="B" onclick="pickQ(this,'C')"><span class="qk">B</span>Number of social media followers</button>
+        <button class="qopt" data-k="C" onclick="pickQ(this,'C')"><span class="qk">C</span>Week-1 retention rate of newly acquired users</button>
+        <button class="qopt" data-k="D" onclick="pickQ(this,'C')"><span class="qk">D</span>Cumulative page views since launch</button>
+      </div>
+      <div class="qexp"><b>Answer: C.</b> Downloads, followers and cumulative page views only ever go up and look impressive, but they don't point to a decision — they're vanity. Week-1 retention is tied to a specific action: if it's low, you fix onboarding or stop over-spending on acquisition. Actionable metrics connect to decisions and can move down as well as up.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HIERARCHY -->
+<section class="sec" id="hierarchy">
+  <div class="wrap">
+    <div class="lbl">The metric hierarchy</div>
+    <h2>One Star, Two Tiers Beneath It</h2>
+    <p class="measure" style="margin-bottom:28px">Companies grow by stacking metrics into three levels: a single guiding <strong>North Star</strong>, a few <strong>Primary (L1)</strong> metrics that feed it, and granular <strong>Supporting (L2)</strong> metrics underneath.</p>
+
+    <!-- ANALOGY: ARMY -->
+    <div style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">🧩 Analogy</div>
+    <div class="analogy" style="margin-bottom:36px">
+      <div class="an-visual army">
+        <div class="an-emoji">🎖️</div>
+        <div class="an-tag">Hierarchy = Chain of command</div>
+        <div class="an-title">A metric tree is an army's chain of command</div>
+        <div class="an-premise">An army doesn't hand every soldier the war's grand strategy. The General sets the mission, Colonels turn it into objectives, and squads execute concrete tasks. A metric hierarchy works the same way — one mission metric, a few team objectives, many granular tasks.</div>
+      </div>
+      <div class="an-map">
+        <div class="an-row"><div class="an-ico">🎖️</div><div class="an-side">The General's mission</div><div class="an-arrow">→</div><div class="an-frame">North Star Metric — the whole company</div></div>
+        <div class="an-row"><div class="an-ico">📋</div><div class="an-side">A Colonel's objectives</div><div class="an-arrow">→</div><div class="an-frame">Primary (L1) — per team / product</div></div>
+        <div class="an-row"><div class="an-ico">🥾</div><div class="an-side">A squad's daily tasks</div><div class="an-arrow">→</div><div class="an-frame">Supporting (L2) — platform / region / segment</div></div>
+      </div>
+    </div>
+
+    <p style="font-size:13.5px;color:var(--text-s);margin-bottom:12px">👇 Tap a level of the pyramid to explore it.</p>
+    <div class="pyr">
+      <div class="pyr-band pyr-1 on" onclick="pyr(this,'nsm')"><div class="pk">Level 0</div><div class="pt">⭐ North Star Metric</div><div class="ps">The one number the whole company rows toward</div></div>
+      <div class="pyr-band pyr-2" onclick="pyr(this,'l1')"><div class="pk">Level 1</div><div class="pt">🎯 Primary Metrics</div><div class="ps">Each team's desired outcome — feeds the North Star</div></div>
+      <div class="pyr-band pyr-3" onclick="pyr(this,'l2')"><div class="pk">Level 2</div><div class="pt">🔬 Supporting Metrics</div><div class="ps">Most granular — track progress at the lowest level</div></div>
+    </div>
+
+    <!-- NSM DETAIL -->
+    <div id="pd-nsm" class="pyr-detail on">
+      <div class="card">
+        <div class="g2" style="gap:24px;align-items:start">
+          <div>
+            <h3 style="font-size:1.1rem;margin-bottom:10px">⭐ North Star / Focus Metric</h3>
+            <p style="font-size:14.5px;margin-bottom:12px">The single most important measure of success for a company. It should be:</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+              <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>A direct reflection of the company's mission</li>
+              <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>An indicator of the value the company brings to customers</li>
+              <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>The <strong>only one of its kind</strong> — multiple NSMs create confusion</li>
+              <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--accent)">→</span>The answer to: "the one metric that best represents our desired outcome"</li>
+            </ul>
+            <div class="callout" style="margin-top:16px"><p><strong>The test:</strong> which metric, if it increased today, would most accelerate the business's flywheel?</p></div>
+          </div>
+          <div>
+            <div style="background:var(--bg-section);border-radius:var(--rm);padding:18px;margin-bottom:14px">
+              <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Real-world example</div>
+              <p style="font-size:14px">Airbnb doesn't obsess over sign-ups; it tracks <strong>Booked Nights</strong> — because a booked night means a guest <em>and</em> a host both won. The test: does your one number go up only when your customer actually succeeds?</p>
+            </div>
+            <a class="toollink" href="https://dsml-vizs.vercel.app/pa-2/north-star-metric-examples-by-company/" target="_blank" rel="noopener">🧭 Interactive: match the North Star by company ↗</a>
+          </div>
+        </div>
+        <figure class="fig" style="margin-bottom:0">
+          <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/133/original/ChatGPT_Image_Sep_9__2026__02_35_52_PM.png?1788944865" alt="North Star metric" loading="lazy">
+          <figcaption>The North Star Metric — one guiding number that reflects the mission and the value delivered to customers.</figcaption>
+        </figure>
+      </div>
+
+      <!-- ANALOGY: SAILOR -->
+      <div style="margin-top:28px">
+        <div style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">🧩 Analogy</div>
+        <div class="analogy">
+          <div class="an-visual star">
+            <div class="an-emoji">⭐</div>
+            <div class="an-tag">North Star = the sailor's star</div>
+            <div class="an-title">Sailors don't steer by staring at their feet</div>
+            <div class="an-premise">Before GPS, a sailor fixed on one steady star and let every turn of the wheel line up to it. A North Star Metric is that fixed point — the number the whole company steers by, even as day-to-day tactics change.</div>
+          </div>
+          <div class="an-map">
+            <div class="an-row"><div class="an-ico">⭐</div><div class="an-side">The one fixed star</div><div class="an-arrow">→</div><div class="an-frame">North Star Metric (one, and only one)</div></div>
+            <div class="an-row"><div class="an-ico">🧭</div><div class="an-side">Every course correction</div><div class="an-arrow">→</div><div class="an-frame">Primary (L1) metrics teams steer by</div></div>
+            <div class="an-row"><div class="an-ico">⚓</div><div class="an-side">The ship reaching port</div><div class="an-arrow">→</div><div class="an-frame">The customer actually getting value</div></div>
+            <div class="an-row"><div class="an-ico">🌫️</div><div class="an-side">A bright but wrong star</div><div class="an-arrow">→</div><div class="an-frame">A vanity metric — dazzling, points nowhere</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz" style="margin-top:28px">
+        <div class="qtag">Quiz 2 · North Star Metric</div>
+        <div class="qq">A meditation app's mission is to help users build a <em>daily mindfulness habit</em>. Which of these is the strongest North Star Metric?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'C')"><span class="qk">A</span>Total app installs</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'C')"><span class="qk">B</span>Number of guided meditations available in the library</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'C')"><span class="qk">C</span>Daily active users who complete a session</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'C')"><span class="qk">D</span>Number of five-star app-store reviews</button>
+        </div>
+        <div class="qexp"><b>Answer: C.</b> A North Star reflects the mission and the value actually delivered, and is the only one of its kind. "Daily active users who complete a session" captures users genuinely building the habit the product promises. Installs and reviews are vanity; library size is a supply/input metric, not delivered value.</div>
+      </div>
+    </div>
+
+    <!-- L1 DETAIL -->
+    <div id="pd-l1" class="pyr-detail">
+      <div class="card">
+        <h3 style="font-size:1.1rem;margin-bottom:10px">🎯 Level-1 / Primary Metric</h3>
+        <div class="g2" style="gap:24px;align-items:start">
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--blue)">→</span>Depicts the desired outcome of a particular <strong>product, team or initiative</strong> — unlike the NSM, which is the whole company.</li>
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--blue)">→</span>Should directly contribute to the focus metric, or act as a <strong>check</strong> that the product is growing in a healthy direction.</li>
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--blue)">→</span>Can be more valuable than the NSM in the <strong>short term</strong>: narrower focus, tighter feedback loop, closer to the specific team.</li>
+          </ul>
+          <div style="background:var(--bg-section);border-radius:var(--rm);padding:18px">
+            <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Worked example</div>
+            <p style="font-size:14px">If the focus metric is <strong>Weekly Active Users</strong>, a good L1 metric is <strong>7-day retention</strong> — so you aren't burning marketing spend acquiring users who leave after a day or two.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- L2 DETAIL -->
+    <div id="pd-l2" class="pyr-detail">
+      <div class="card">
+        <h3 style="font-size:1.1rem;margin-bottom:10px">🔬 Level-2 / Supporting Metric</h3>
+        <div class="g2" style="gap:24px;align-items:start">
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--green)">→</span>The most <strong>granular</strong> indicators, used to track progress at the lowest level.</li>
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--green)">→</span>A signal that the primary metric is moving in the right direction.</li>
+            <li style="font-size:14px;color:var(--text-b);display:flex;gap:8px"><span style="color:var(--green)">→</span>Often a primary metric <strong>sliced</strong> by platform, region or segment.</li>
+          </ul>
+          <div style="background:var(--bg-section);border-radius:var(--rm);padding:18px">
+            <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Worked example</div>
+            <p style="font-size:14px">Take the retention example one step further: an L2 metric could be <strong>iOS app retention</strong>, or the retention of a specific <strong>region or customer segment</strong>.</p>
+          </div>
+        </div>
+        <figure class="fig" style="margin-bottom:0">
+          <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/134/original/ChatGPT_Image_Sep_9__2026__02_33_43_PM.png?1788944962" alt="Metric hierarchy levels" loading="lazy">
+          <figcaption>North Star → Primary (L1) → Supporting (L2): each level narrows focus and adds granularity.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- PUTTING TOGETHER -->
+    <div style="margin-top:32px">
+      <h3 style="font-size:1.1rem;margin-bottom:10px">Putting the levels together</h3>
+      <p class="measure" style="margin-bottom:14px">Read the hierarchy as one connected tree — Focus → L1 → L2 — first in the abstract, then with a real streaming example.</p>
+      <a class="toollink" href="https://dsml-vizs.vercel.app/pa-2/north-star-to-l1-to-l2-hierarchy/" target="_blank" rel="noopener">🌳 Interactive: North Star → L1 → L2 hierarchy ↗</a>
+    </div>
+
+    <div class="quiz" style="margin-top:28px">
+      <div class="qtag">Quiz 3 · L1 vs L2</div>
+      <div class="qq">A product's focus metric is Weekly Active Users, and its Level-1 metric is 7-day retention. Which is the best example of a Level-2 (supporting) metric?</div>
+      <div class="qopts">
+        <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>The company's total annual revenue</button>
+        <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>7-day retention for iOS users specifically</button>
+        <button class="qopt" data-k="C" onclick="pickQ(this,'B')"><span class="qk">C</span>The company's overall mission statement</button>
+        <button class="qopt" data-k="D" onclick="pickQ(this,'B')"><span class="qk">D</span>Total number of feature releases this year</button>
+      </div>
+      <div class="qexp"><b>Answer: B.</b> Level-2 metrics are the most granular — usually a Level-1 metric sliced by platform, region or segment. "7-day retention for iOS users" is exactly the primary metric broken down by platform. Company-wide revenue is broader, not more granular, so it can't be an L2.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLASSIFY IT -->
+<section class="sec sec-alt" id="classify">
+  <div class="wrap">
+    <div class="lbl">You classify</div>
+    <h2>Sort Each Metric Into the Hierarchy</h2>
+    <p class="measure" style="margin-bottom:24px">For each metric below, tap the level you think it belongs to. We'll show you the answer and why.</p>
+
+    <div class="mod2">
+      <div class="cls-row" data-correct="nsm">
+        <div class="cls-metric">Airbnb — Booked Nights</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">A booked night is the moment a guest and host both win — a direct reflection of Airbnb's mission and value delivered. That's a <strong>North Star</strong>.</div>
+      </div>
+
+      <div class="cls-row" data-correct="van">
+        <div class="cls-metric">Total lifetime app downloads</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">It only ever goes up and points to no decision — impressive, but <strong>vanity</strong>. Many of those users opened the app once and vanished.</div>
+      </div>
+
+      <div class="cls-row" data-correct="l1">
+        <div class="cls-metric">7-day retention (focus metric = Weekly Active Users)</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">It feeds the North Star (WAU) and checks healthy growth with a tight feedback loop — a <strong>Primary (L1)</strong> metric.</div>
+      </div>
+
+      <div class="cls-row" data-correct="l2">
+        <div class="cls-metric">iOS 7-day retention</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">It's the primary metric sliced by platform — the most granular view. That's a <strong>Supporting (L2)</strong> metric.</div>
+      </div>
+
+      <div class="cls-row" data-correct="van">
+        <div class="cls-metric">Social-media followers</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">5M followers with a 0.001% CTR is the classic <strong>vanity</strong> metric — a big number with no tie to a decision.</div>
+      </div>
+
+      <div class="cls-row" data-correct="l2">
+        <div class="cls-metric">Retention of a specific customer segment</div>
+        <div class="cls-btns">
+          <button class="cls-btn" data-v="nsm" onclick="classify(this)">North Star</button>
+          <button class="cls-btn" data-v="l1" onclick="classify(this)">Primary (L1)</button>
+          <button class="cls-btn" data-v="l2" onclick="classify(this)">Supporting (L2)</button>
+          <button class="cls-btn" data-v="van" onclick="classify(this)">Vanity</button>
+        </div>
+        <div class="cls-note">Retention sliced by segment is granular progress-tracking at the lowest level — a <strong>Supporting (L2)</strong> metric.</div>
+      </div>
+    </div>
+
+    <!-- AI TRY-IT -->
+    <div class="card" style="margin-top:28px;border-top:3px solid var(--purple)">
+      <div style="font-size:12px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">🤖 Try it now — build a metric tree with AI</div>
+      <p style="font-size:14.5px;margin-bottom:12px">You now have the full North Star → Primary → Supporting pyramid. Ask an AI to build one, then use your vanity-vs-actionable lens to grade it:</p>
+      <div style="background:var(--bg-section);border-radius:var(--r);padding:16px;font-size:14px;font-style:italic;margin-bottom:12px">"Given a fitness app called PureFit, build a North Star metric, 2–3 Primary (L1) metrics, and 3–4 Supporting (L2) metrics."</div>
+      <p style="font-size:14px;color:var(--text-s)">Watch for a metric at the wrong level, or a vanity metric dressed as actionable (e.g. "number of workout videos available" placed as a Supporting metric with no line to the North Star). Push it further: <em>"Why is this Level-2 and not vanity?"</em> A good justification traces back to the North Star; a weak one just restates the definition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTION TYPES -->
+<section class="sec" id="questions">
+  <div class="wrap">
+    <div class="lbl">Interview lens</div>
+    <h2>Two Types of Metric Question</h2>
+    <p class="measure" style="margin-bottom:28px">Companies like Facebook and Google use metric questions to test critical thinking and communication. The first thing they score is whether you <strong>recognise which type</strong> you're facing.</p>
+
+    <div class="g2">
+      <div class="card" style="border-top:3px solid var(--accent)">
+        <div class="tag t-indigo" style="margin-bottom:10px">Type 1 · Metric definition</div>
+        <p style="font-size:14.5px;margin-bottom:12px">Can you define metrics that show the health of a product or feature?</p>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:14px;font-size:14px;margin-bottom:12px">"What metrics would you use to determine success for Facebook Sponsored Posts?"</div>
+        <p style="font-size:14px;color:var(--text-s)">Many metrics could apply (impressions, clicks, return on ad spend…). The interviewer wants to hear you <strong>select the most important ones through a rigorous process</strong> → today's 5-step framework.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--amber)">
+        <div class="tag t-amber" style="margin-bottom:10px">Type 2 · Metric change</div>
+        <p style="font-size:14.5px;margin-bottom:12px">Do you know what to do when a key metric moves up or down for no apparent reason?</p>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:14px;font-size:14px;margin-bottom:12px">"Why did the Facebook event clicks jump 15%?"</div>
+        <p style="font-size:14px;color:var(--text-s)">This is essentially <strong>root cause analysis</strong> — you already met it last class. <strong>CRIED + TROPiCS</strong> is your ready-made answer.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:20px">
+      <div style="font-size:14.5px;font-weight:600;color:var(--text-h);margin-bottom:4px">The callback</div>
+      <p>Metric-change questions <em>are</em> the "why did it move?" problems from Lecture 1 — so CRIED and TROPiCS handle them. Today we build a framework for the <strong>other</strong> type: metric definition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5-STEP FRAMEWORK -->
+<section class="sec sec-alt" id="framework">
+  <div class="wrap">
+    <div class="lbl">The definition framework</div>
+    <h2>Describe → Goal → Journey → Map → Evaluate</h2>
+    <p class="measure" style="margin-bottom:24px">A repeatable five-step process for any metric-<em>definition</em> question. Step through it.</p>
+
+    <div class="dots">
+      <div class="dot on" id="md0"></div><div class="dot-line"></div>
+      <div class="dot" id="md1"></div><div class="dot-line"></div>
+      <div class="dot" id="md2"></div><div class="dot-line"></div>
+      <div class="dot" id="md3"></div><div class="dot-line"></div>
+      <div class="dot" id="md4"></div>
+    </div>
+
+    <div id="ms0" class="cs on">
+      <div class="card">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--accent);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">1</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 1 of 5</div><h3 style="margin:0">Describe the feature</h3></div></div>
+          <p style="font-size:14.5px">Explain your understanding of the feature — what problem it solves and how. Make sure everyone is on the same page about the problem before you measure anything.</p>
+        </div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Why it matters</div><p style="font-size:14px">Skipping this is the classic trap — you end up measuring a feature you and the interviewer pictured differently.</p></div>
+      </div>
+    </div>
+
+    <div id="ms1" class="cs">
+      <div class="card">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--blue);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">2</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 2 of 5</div><h3 style="margin:0">Determine the goal</h3></div></div>
+          <p style="font-size:14.5px">You're measuring the success of a feature in achieving a <strong>specific goal</strong>. Get clarity on exactly what that goal is before choosing any metric.</p>
+        </div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Anchor everything here</div><p style="font-size:14px">Every metric you propose later should trace back to this goal — that's how you avoid a pile of vanity numbers.</p></div>
+      </div>
+    </div>
+
+    <div id="ms2" class="cs">
+      <div class="card">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--purple);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">3</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 3 of 5</div><h3 style="margin:0">Walk the customer journey</h3></div></div>
+          <p style="font-size:14.5px">Understand the funnel — walk the user from the start to the end of their interaction with the feature. This surfaces potential behaviours that can help or hurt the feature's success.</p>
+        </div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">The habit</div><p style="font-size:14px">Whenever you must define metrics, walk the user down the funnel and measure each step — the same lens behind <strong>AAAERR</strong> from last class.</p></div>
+      </div>
+    </div>
+
+    <div id="ms3" class="cs">
+      <div class="card" style="grid-template-columns:1fr">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--amber);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">4</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 4 of 5</div><h3 style="margin:0">Map &amp; quantify user behaviours</h3></div></div>
+          <p style="font-size:14.5px;margin-bottom:16px">Map the behaviours along the journey that push the goal up or down, and quantify them. The customer-journey phases give you the checklist — tap each to see what you'd measure.</p>
+          <div class="mod2">
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--accent)">1</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Awareness</div><div style="font-size:12px;color:var(--text-s)">Do users know it exists?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Reach and discovery — % of users who have seen or found the feature.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--blue)">2</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Acquisition</div><div style="font-size:12px;color:var(--text-s)">Are new users coming in?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">New users or customers entering — sign-ups, first-time adopters.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--green)">3</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Activation</div><div style="font-size:12px;color:var(--text-s)">Do they reach first value?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Adoption — % who take the first key action that delivers value.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--purple)">4</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Engagement</div><div style="font-size:12px;color:var(--text-s)">Are they interacting?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Frequency and depth of use over time.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--amber)">5</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Retention</div><div style="font-size:12px;color:var(--text-s)">Do they come back?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Return behaviour — D1/D7/D30 retention, churn.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--red)">6</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Monetization</div><div style="font-size:12px;color:var(--text-s)">Is it earning?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Revenue signals — revenue per user, conversion to paid.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--secondary,#8B5CF6)">7</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Referral</div><div style="font-size:12px;color:var(--text-s)">Do they bring others?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Virality — invites sent, referral conversion.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ms4" class="cs">
+      <div class="card">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--green);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">5</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 5 of 5</div><h3 style="margin:0">Evaluate your metrics</h3></div></div>
+          <p style="font-size:14.5px">You now have a list of candidate metrics. Evaluate them against meaningful criteria and keep the ones that matter most.</p>
+        </div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Evaluate on</div><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tag t-indigo">Reach</span><span class="tag t-indigo">Impact</span><span class="tag t-indigo">Confidence</span><span class="tag t-indigo">Effort</span></div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+      <button class="btn-ghost btn-sm" id="mp" onclick="navM(-1)" disabled>← Previous</button>
+      <span id="mlbl" style="font-size:13px;color:var(--text-s)">Step 1 of 5</span>
+      <button class="btn btn-sm" id="mn" onclick="navM(1)">Next →</button>
+    </div>
+
+    <div class="g2" style="margin-top:24px;align-items:start">
+      <figure class="fig" style="margin:0">
+        <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/136/original/ChatGPT_Image_Sep_9__2026__02_43_08_PM.png?1788945200" alt="5-step metric definition framework" loading="lazy">
+        <figcaption>The five-step metric-definition framework.</figcaption>
+      </figure>
+      <figure class="fig" style="margin:0">
+        <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/137/original/ChatGPT_Image_Sep_9__2026__02_43_01_PM.png?1788945252" alt="Customer journey mapping" loading="lazy">
+        <figcaption>Mapping user behaviours along the customer-journey phases.</figcaption>
+      </figure>
+    </div>
+
+    <a class="toollink" href="https://dsml-vizs.vercel.app/pa-2/5-step-metric-definition-framework-funnel-2/v2/" target="_blank" rel="noopener" style="margin-top:16px">🛠️ Interactive: solve a definition question end-to-end ↗</a>
+
+    <div class="quiz" style="margin-top:28px">
+      <div class="qtag">Quiz 4 · Capstone — pick the type &amp; the approach</div>
+      <div class="qq">An interviewer says: "YouTube's watch time dropped 8% last week with no obvious cause — how would you investigate?" What type of question is this, and what's the correct approach?</div>
+      <div class="qopts">
+        <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>A metric-definition question → apply the 5-step Describe → Goal → Journey → Map → Evaluate framework</button>
+        <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>A metric-change question → apply root-cause analysis (rule out bugs/logging first, then internal &amp; external factors)</button>
+        <button class="qopt" data-k="C" onclick="pickQ(this,'B')"><span class="qk">C</span>A guesstimate question → estimate YouTube's total market size</button>
+        <button class="qopt" data-k="D" onclick="pickQ(this,'B')"><span class="qk">D</span>A product-design question → recommend a new feature to fix it</button>
+      </div>
+      <div class="qexp"><b>Answer: B.</b> A metric moving "for no apparent reason" is a metric-change question — essentially RCA. Rule out instrumentation/logging first, then internal factors (time, region, platform, segments, cannibalization) and external ones (competitors, seasonality) — the CRIED/TROPiCS approach. The 5-step framework is for the <em>other</em> type ("what metrics would you use for X?"), so recognising the type first is exactly what interviewers score.</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section class="sec" id="interview">
+  <div class="wrap">
+    <div class="lbl">Interview corner</div>
+    <h2>Practice Questions</h2>
+    <p class="measure" style="margin-bottom:28px">Frame your own answer first — then reveal the approach.</p>
+
+    <div class="mod2">
+      <div class="iq-card">
+        <div style="font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:8px">Q1 — What metrics would you use to measure success for Facebook Sponsored Posts?</div>
+        <span class="tag t-indigo" style="margin-bottom:14px;display:inline-block">Metric definition</span>
+        <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
+        <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:14px"><strong style="color:var(--accent)">Describe:</strong> A paid post an advertiser shows to a target audience in-feed.</div>
+          <div style="font-size:14px"><strong style="color:var(--blue)">Goal:</strong> Drive advertiser value (clicks/conversions) without wrecking user experience.</div>
+          <div style="font-size:14px"><strong style="color:var(--purple)">Journey → Map:</strong> Awareness (impressions, reach) → Engagement (CTR, likes) → Monetization (ROAS, CPC) → guardrail (hide/report rate).</div>
+          <div style="font-size:14px"><strong style="color:var(--green)">Evaluate:</strong> Rank by reach/impact/confidence/effort; lead with ROAS and CTR as the headline metrics.</div>
+        </div></div>
+      </div>
+
+      <div class="iq-card">
+        <div style="font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:8px">Q2 — What's a strong North Star Metric for a food-delivery app, and why not "app downloads"?</div>
+        <span class="tag t-purple" style="margin-bottom:14px;display:inline-block">North Star</span>
+        <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
+        <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:14px"><strong style="color:var(--accent)">Candidate:</strong> <em>Orders successfully delivered per week</em> — up only when a customer actually gets value.</div>
+          <div style="font-size:14px"><strong style="color:var(--red)">Why not downloads:</strong> vanity — it only goes up and doesn't reflect delivered value (recall the 2M-downloads trap).</div>
+          <div style="font-size:14px"><strong style="color:var(--green)">Test:</strong> would it accelerate the flywheel if it rose today? Delivered orders → yes; downloads → not necessarily.</div>
+        </div></div>
+      </div>
+
+      <div class="iq-card">
+        <div style="font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:8px">Q3 — Signups are up 12% but revenue is flat. How would you investigate?</div>
+        <span class="tag t-amber" style="margin-bottom:14px;display:inline-block">Metric change</span>
+        <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
+        <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:14px"><strong style="color:var(--amber)">Recognise the type:</strong> a metric-change question → RCA, not the 5-step framework.</div>
+          <div style="font-size:14px"><strong style="color:var(--accent)">Rule out:</strong> tracking/attribution bug inflating signups?</div>
+          <div style="font-size:14px"><strong style="color:var(--blue)">TROPiCS:</strong> Segmentation (are the new signups low-intent?), Region/Platform (one channel spiking?), Cannibalization.</div>
+          <div style="font-size:14px"><strong style="color:var(--green)">Diagnose:</strong> likely low-quality acquisition — signups aren't activating/monetizing. Watch L1 activation, not the vanity signup count.</div>
+        </div></div>
+      </div>
+
+      <div class="iq-card">
+        <div style="font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:8px">Q4 — Build a 3-level metric hierarchy for a video-streaming app.</div>
+        <span class="tag t-green" style="margin-bottom:14px;display:inline-block">Hierarchy</span>
+        <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
+        <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:14px"><strong style="color:var(--accent)">North Star:</strong> total watch time (value delivered — people actually watching).</div>
+          <div style="font-size:14px"><strong style="color:var(--blue)">Primary (L1):</strong> 7-day retention; average sessions per active user.</div>
+          <div style="font-size:14px"><strong style="color:var(--green)">Supporting (L2):</strong> iOS 7-day retention; watch time by region; completion rate per content category.</div>
+          <div style="font-size:14px"><strong>Check:</strong> every L1 feeds the North Star; every L2 is an L1 sliced by platform/region/segment — none are vanity.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POCKET -->
+<section class="sec sec-alt" id="pocket">
+  <div class="wrap">
+    <div class="lbl">Quick reference</div>
+    <h2 style="margin-bottom:20px">Analyst's Pocket Card</h2>
+    <div class="pocket">
+      <div class="g2" style="gap:36px">
+        <div>
+          <h3>The metric hierarchy</h3>
+          <div class="prow">
+            <div class="pi"><span>★</span> North Star — whole company</div>
+            <div class="pi"><span>L1</span> Primary — team / product</div>
+            <div class="pi"><span>L2</span> Supporting — platform / region / segment</div>
+          </div>
+          <h3>Vanity vs Actionable</h3>
+          <div class="prow">
+            <div class="pi"><span>✗</span> Vanity — only goes up, no decision</div>
+            <div class="pi"><span>✓</span> Actionable — tied to an action, can fall</div>
+          </div>
+        </div>
+        <div>
+          <h3>5-step definition framework</h3>
+          <div class="prow">
+            <div class="pi"><span>1</span> Describe</div>
+            <div class="pi"><span>2</span> Goal</div>
+            <div class="pi"><span>3</span> Journey</div>
+            <div class="pi"><span>4</span> Map</div>
+            <div class="pi"><span>5</span> Evaluate</div>
+          </div>
+          <h3>Two question types</h3>
+          <div class="prow">
+            <div class="pi"><span>Def</span> "What metrics for X?" → 5-step</div>
+            <div class="pi"><span>Chg</span> "Why did it move?" → CRIED / TROPiCS</div>
+          </div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:14px;font-size:13.5px;color:#C7D2FE;margin-top:4px">Evaluate metrics on <strong style="color:#fff">Reach · Impact · Confidence · Effort</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY + TAKEAWAYS -->
+<section class="sec" id="summary">
+  <div class="wrap">
+    <div class="lbl">Today's journey in one picture</div>
+    <h2 style="margin-bottom:6px">From 40 Charts to One Star and Two Tiers</h2>
+    <figure class="fig">
+      <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/139/original/ChatGPT_Image_Sep_9__2026__02_47_35_PM.png?1788945497" alt="Today's journey summary" loading="lazy">
+      <figcaption>How a wall of 40 charts becomes a clear three-level metric hierarchy a VP — and an interviewer — would respect.</figcaption>
+    </figure>
+
+    <h2 style="margin:36px 0 20px">Key Takeaways</h2>
+    <div class="card" style="max-width:960px">
+      <div class="tw"><div class="twn">1</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">A KPI is a metric you're held accountable to</div><p style="font-size:14px;color:var(--text-s)">Every metric is a data point; a KPI is the one important enough to put on a slide and tie a bonus to.</p></div></div>
+      <div class="tw"><div class="twn">2</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Vanity looks impressive; actionable drives a decision</div><p style="font-size:14px;color:var(--text-s)">If a number only ever goes up and points to no action, it's vanity. Actionable metrics can fall — and tell you what to fix.</p></div></div>
+      <div class="tw"><div class="twn">3</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Stack metrics into three levels</div><p style="font-size:14px;color:var(--text-s)">One North Star (whole company) → Primary L1 (team/product) → Supporting L2 (a primary sliced by platform/region/segment).</p></div></div>
+      <div class="tw"><div class="twn">4</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Name the question type before you answer</div><p style="font-size:14px;color:var(--text-s)">Definition ("what metrics for X?") → 5-step framework. Change ("why did it move?") → CRIED/TROPiCS. Interviewers score this first.</p></div></div>
+      <div class="tw"><div class="twn">5</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Define metrics with Describe → Goal → Journey → Map → Evaluate</div><p style="font-size:14px;color:var(--text-s)">Walk the user down the funnel, quantify each behaviour, then rank on reach, impact, confidence and effort.</p></div></div>
+    </div>
+
+    <div style="margin-top:28px;text-align:center;padding:36px;background:var(--accent-wash);border-radius:var(--rm)">
+      <div style="font-size:13px;color:var(--text-s);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Up next</div>
+      <div style="font-size:24px;font-weight:700;color:var(--text-h);margin-bottom:4px">Product Metrics II</div>
+      <div style="font-size:14.5px;color:var(--text-s)">We take the hierarchy further and go deeper into defining and measuring the metrics that matter.</div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#0F172A;padding:28px 20px;text-align:center">
+  <div style="font-size:13px;color:#475569">Scaler — Product Analytics Module &nbsp;·&nbsp; Lecture 2 of 12</div>
+</footer>
+
+<script>
+// 5-step navigator
+var msn=0,mst=5;
+function navM(d){
+  document.getElementById('ms'+msn).classList.remove('on');
+  msn=Math.max(0,Math.min(mst-1,msn+d));
+  for(var i=0;i<mst;i++){var dt=document.getElementById('md'+i);dt.classList.remove('on','done');if(i<msn)dt.classList.add('done');else if(i===msn)dt.classList.add('on');}
+  document.getElementById('ms'+msn).classList.add('on');
+  document.getElementById('mlbl').textContent='Step '+(msn+1)+' of '+mst;
+  document.getElementById('mp').disabled=msn===0;
+  document.getElementById('mn').disabled=msn===mst-1;
+}
+// pyramid
+function pyr(el,id){
+  document.querySelectorAll('.pyr-band').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.pyr-detail').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('pd-'+id).classList.add('on');
+}
+// funnel accordion
+function toggleF(s){s.querySelector('.fb').classList.toggle('on');}
+// quiz
+function pickQ(btn,correct){
+  var box=btn.closest('.quiz');
+  box.querySelectorAll('.qopt').forEach(function(o){o.disabled=true;});
+  if(btn.getAttribute('data-k')===correct){btn.classList.add('correct');}
+  else{btn.classList.add('wrong');box.querySelector('.qopt[data-k="'+correct+'"]').classList.add('correct');}
+  box.querySelector('.qexp').classList.add('on');
+}
+// classifier
+function classify(btn){
+  var row=btn.closest('.cls-row');
+  if(row.dataset.done)return;row.dataset.done='1';
+  var correct=row.dataset.correct,pick=btn.dataset.v;
+  row.querySelectorAll('.cls-btn').forEach(function(b){b.disabled=true;if(b.dataset.v===correct)b.classList.add('correct');});
+  if(pick!==correct)btn.classList.add('wrong');
+  row.querySelector('.cls-note').classList.add('on');
+}
+// interview reveal
+function toggleR(btn){var b=btn.nextElementSibling,open=b.classList.contains('on');b.classList.toggle('on');btn.innerHTML=open?'▶ &nbsp;Show approach':'▼ &nbsp;Hide approach';}
+// sticky nav
+var secs=[].slice.call(document.querySelectorAll('section[id]'));
+var nav=[].slice.call(document.querySelectorAll('.snav a'));
+window.addEventListener('scroll',function(){
+  var cur='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-80)cur=s.id;});
+  nav.forEach(function(n){n.classList.remove('on');if(n.getAttribute('href')==='#'+cur)n.classList.add('on');});
+});
+</script>
+</body>
+</html>

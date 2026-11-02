@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -190,7 +191,7 @@ a{color:var(--accent);text-decoration:none}
       <span class="hero-badge">Vanity vs Actionable</span>
       <span class="hero-badge">North Star Metric</span>
       <span class="hero-badge">L1 → L2 Hierarchy</span>
-      <span class="hero-badge">5-Step Framework</span>
+      <span class="hero-badge">4-Step Framework</span>
     </div>
   </div>
 </header>
@@ -205,7 +206,7 @@ a{color:var(--accent);text-decoration:none}
     <a href="#hierarchy">Hierarchy</a>
     <a href="#classify">Classify It</a>
     <a href="#questions">Question Types</a>
-    <a href="#framework">5-Step Framework</a>
+    <a href="#framework">4-Step Framework</a>
     <a href="#interview">Interview</a>
     <a href="#pocket">Pocket Card</a>
   </div>
@@ -580,7 +581,12 @@ a{color:var(--accent);text-decoration:none}
       <div style="font-size:12px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">🤖 Try it now — build a metric tree with AI</div>
       <p style="font-size:14.5px;margin-bottom:12px">You now have the full North Star → Primary → Supporting pyramid. Ask an AI to build one, then use your vanity-vs-actionable lens to grade it:</p>
       <div style="background:var(--bg-section);border-radius:var(--r);padding:16px;font-size:14px;font-style:italic;margin-bottom:12px">"Given a fitness app called PureFit, build a North Star metric, 2–3 Primary (L1) metrics, and 3–4 Supporting (L2) metrics."</div>
-      <p style="font-size:14px;color:var(--text-s)">Watch for a metric at the wrong level, or a vanity metric dressed as actionable (e.g. "number of workout videos available" placed as a Supporting metric with no line to the North Star). Push it further: <em>"Why is this Level-2 and not vanity?"</em> A good justification traces back to the North Star; a weak one just restates the definition.</p>
+      <p style="font-size:14px;color:var(--text-s);margin-bottom:14px">Watch for a metric at the wrong level, or a vanity metric dressed as actionable (e.g. "number of workout videos available" placed as a Supporting metric with no line to the North Star). Push it further: <em>"Why is this Level-2 and not vanity?"</em> A good justification traces back to the North Star; a weak one just restates the definition.</p>
+      <div class="callout">
+        <div style="font-size:14.5px;font-weight:600;color:var(--text-h);margin-bottom:4px">↩️ The callback to Lecture 1</div>
+        <p>Notice if this tree structure looks familiar — some of you saw this exact shape when we asked AI about <strong>'Save for Later'</strong> back in Lecture 1, before you'd even learned this framework. AI already knew it; you didn't yet. Now you do — go back and see whether that earlier AI answer holds up better in hindsight.</p>
+      </div>
+      <div class="witty" style="margin-bottom:0">🔜 Coming in Product Metrics II: you'll build the PureFit metric tree <em>yourself</em> first, using the 4-step framework — then run the same AI prompt and compare. Unaided, you'll explain which of your metrics AI missed, and which of AI's you'd cut and why.</div>
     </div>
   </div>
 </section>
@@ -597,7 +603,7 @@ a{color:var(--accent);text-decoration:none}
         <div class="tag t-indigo" style="margin-bottom:10px">Type 1 · Metric definition</div>
         <p style="font-size:14.5px;margin-bottom:12px">Can you define metrics that show the health of a product or feature?</p>
         <div style="background:var(--bg-section);border-radius:var(--r);padding:14px;font-size:14px;margin-bottom:12px">"What metrics would you use to determine success for Facebook Sponsored Posts?"</div>
-        <p style="font-size:14px;color:var(--text-s)">Many metrics could apply (impressions, clicks, return on ad spend…). The interviewer wants to hear you <strong>select the most important ones through a rigorous process</strong> → today's 5-step framework.</p>
+        <p style="font-size:14px;color:var(--text-s)">Many metrics could apply (impressions, clicks, return on ad spend…). The interviewer wants to hear you <strong>select the most important ones through a rigorous process</strong> → today's 4-step framework.</p>
       </div>
       <div class="card" style="border-top:3px solid var(--amber)">
         <div class="tag t-amber" style="margin-bottom:10px">Type 2 · Metric change</div>
@@ -614,108 +620,92 @@ a{color:var(--accent);text-decoration:none}
   </div>
 </section>
 
-<!-- 5-STEP FRAMEWORK -->
+<!-- 4-STEP FRAMEWORK -->
 <section class="sec sec-alt" id="framework">
   <div class="wrap">
     <div class="lbl">The definition framework</div>
-    <h2>Describe → Goal → Journey → Map → Evaluate</h2>
-    <p class="measure" style="margin-bottom:24px">A repeatable five-step process for any metric-<em>definition</em> question. Step through it.</p>
+    <h2>Clarify → Business Goals → Define Metrics → Summarize</h2>
+    <p class="measure" style="margin-bottom:24px">A repeatable four-step process for any metric-<em>definition</em> question — and it is <strong>the same framework you used for Facebook 'Save' in Lecture 1</strong>. Step through it.</p>
 
     <div class="dots">
       <div class="dot on" id="md0"></div><div class="dot-line"></div>
       <div class="dot" id="md1"></div><div class="dot-line"></div>
       <div class="dot" id="md2"></div><div class="dot-line"></div>
-      <div class="dot" id="md3"></div><div class="dot-line"></div>
-      <div class="dot" id="md4"></div>
+      <div class="dot" id="md3"></div>
     </div>
 
     <div id="ms0" class="cs on">
       <div class="card">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--accent);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">1</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 1 of 5</div><h3 style="margin:0">Describe the feature</h3></div></div>
-          <p style="font-size:14.5px">Explain your understanding of the feature — what problem it solves and how. Make sure everyone is on the same page about the problem before you measure anything.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--accent);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">1</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 1 of 4</div><h3 style="margin:0">Clarify</h3></div></div>
+          <p style="font-size:14.5px;margin-bottom:12px">Ask clarifying questions about the feature: what it is, what problem it solves, and the main objective behind its release — engagement, retention, monetization, and so on.</p>
+          <p style="font-size:14.5px">Then identify <strong>who benefits</strong> from it: users, marketers, or the business.</p>
         </div>
-        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Why it matters</div><p style="font-size:14px">Skipping this is the classic trap — you end up measuring a feature you and the interviewer pictured differently.</p></div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Why it matters</div><p style="font-size:14px">Skipping this is the classic trap — you end up measuring a feature you and the interviewer pictured differently. Clarify-first is the same instinct behind CRIED from last class.</p></div>
       </div>
     </div>
 
     <div id="ms1" class="cs">
       <div class="card">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--blue);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">2</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 2 of 5</div><h3 style="margin:0">Determine the goal</h3></div></div>
-          <p style="font-size:14.5px">You're measuring the success of a feature in achieving a <strong>specific goal</strong>. Get clarity on exactly what that goal is before choosing any metric.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--blue);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">2</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 2 of 4</div><h3 style="margin:0">Business Goals</h3></div></div>
+          <p style="font-size:14.5px;margin-bottom:12px">State the goal for <strong>each stakeholder</strong> — the user goal, the marketer goal, and the business goal. They are rarely identical.</p>
+          <p style="font-size:14.5px">You are measuring the feature's success against these goals, so make them explicit before you name a single metric.</p>
         </div>
-        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Anchor everything here</div><p style="font-size:14px">Every metric you propose later should trace back to this goal — that's how you avoid a pile of vanity numbers.</p></div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Three goals, stated separately</div><div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:14px"><strong style="color:var(--accent)">User:</strong> what does the user get out of it?</div><div style="font-size:14px"><strong style="color:var(--blue)">Marketer:</strong> what does an advertiser or seller get?</div><div style="font-size:14px"><strong style="color:var(--green)">Business:</strong> how does the company win?</div></div></div>
       </div>
     </div>
 
     <div id="ms2" class="cs">
-      <div class="card">
-        <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--purple);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">3</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 3 of 5</div><h3 style="margin:0">Walk the customer journey</h3></div></div>
-          <p style="font-size:14.5px">Understand the funnel — walk the user from the start to the end of their interaction with the feature. This surfaces potential behaviours that can help or hurt the feature's success.</p>
-        </div>
-        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">The habit</div><p style="font-size:14px">Whenever you must define metrics, walk the user down the funnel and measure each step — the same lens behind <strong>AAAERR</strong> from last class.</p></div>
-      </div>
-    </div>
-
-    <div id="ms3" class="cs">
       <div class="card" style="grid-template-columns:1fr">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--amber);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">4</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 4 of 5</div><h3 style="margin:0">Map &amp; quantify user behaviours</h3></div></div>
-          <p style="font-size:14.5px;margin-bottom:16px">Map the behaviours along the journey that push the goal up or down, and quantify them. The customer-journey phases give you the checklist — tap each to see what you'd measure.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--purple);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">3</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 3 of 4</div><h3 style="margin:0">Define Metrics</h3></div></div>
+          <p style="font-size:14.5px;margin-bottom:16px">Walk the user through the <strong>AAAERR</strong> stages and define the metric that shows success at each one. <em>Not every stage applies to every feature</em> — say so rather than forcing one. Tap each stage to see what you would measure.</p>
           <div class="mod2">
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--accent)">1</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Awareness</div><div style="font-size:12px;color:var(--text-s)">Do users know it exists?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Reach and discovery — % of users who have seen or found the feature.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--blue)">2</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Acquisition</div><div style="font-size:12px;color:var(--text-s)">Are new users coming in?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">New users or customers entering — sign-ups, first-time adopters.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--green)">3</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Activation</div><div style="font-size:12px;color:var(--text-s)">Do they reach first value?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Adoption — % who take the first key action that delivers value.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--purple)">4</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Engagement</div><div style="font-size:12px;color:var(--text-s)">Are they interacting?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Frequency and depth of use over time.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--amber)">5</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Retention</div><div style="font-size:12px;color:var(--text-s)">Do they come back?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Return behaviour — D1/D7/D30 retention, churn.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--red)">6</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Monetization</div><div style="font-size:12px;color:var(--text-s)">Is it earning?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Revenue signals — revenue per user, conversion to paid.</p></div></div>
-            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--secondary,#8B5CF6)">7</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Referral</div><div style="font-size:12px;color:var(--text-s)">Do they bring others?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Virality — invites sent, referral conversion.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--accent)">A</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Awareness</div><div style="font-size:12px;color:var(--text-s)">Do users know it exists?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Reach and discovery — % of users who have seen or found the feature.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--blue)">A</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Acquisition</div><div style="font-size:12px;color:var(--text-s)">Are new users coming in?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">New users or customers entering — sign-ups, first-time adopters.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--green)">A</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Activation</div><div style="font-size:12px;color:var(--text-s)">Do they reach first value?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Adoption — % who take the first key action that delivers value.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--purple)">E</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Engagement</div><div style="font-size:12px;color:var(--text-s)">Are they interacting?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Frequency and depth of use over time.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--red)">R</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Revenue</div><div style="font-size:12px;color:var(--text-s)">Is it earning?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Monetization signals — revenue per user, conversion to paid, return on ad spend.</p></div></div>
+            <div class="fs" onclick="toggleF(this)"><div class="fsh"><div class="fl" style="background:var(--amber)">R</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--text-h)">Retention</div><div style="font-size:12px;color:var(--text-s)">Do they come back?</div></div><div style="color:var(--text-m);font-size:12px">▼</div></div><div class="fb"><p style="font-size:13.5px">Return behaviour — D1/D7/D30 retention, churn.</p></div></div>
+          </div>
+          <div class="callout" style="margin-top:16px">
+            <div style="font-size:14.5px;font-weight:600;color:var(--text-h);margin-bottom:4px">Don't stop at success metrics — add guardrails</div>
+            <p>Along with the success metrics, define <strong>guardrail metrics</strong>: what must <em>not</em> get worse because of this feature. A feature that lifts engagement while tanking a guardrail isn't a win.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="ms4" class="cs">
+    <div id="ms3" class="cs">
       <div class="card">
         <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--green);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">5</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 5 of 5</div><h3 style="margin:0">Evaluate your metrics</h3></div></div>
-          <p style="font-size:14.5px">You now have a list of candidate metrics. Evaluate them against meaningful criteria and keep the ones that matter most.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:44px;height:44px;background:var(--green);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800">4</div><div><div style="font-size:11px;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Step 4 of 4</div><h3 style="margin:0">Summarize</h3></div></div>
+          <p style="font-size:14.5px;margin-bottom:12px">Recap the key points — from the objective, through the metrics you would track, to any recommendation you want to make.</p>
+          <p style="font-size:14.5px">Then do the thing most candidates forget: once your metrics are listed, <strong>point out which one is the North Star and which are L1 or L2</strong>. That tells the interviewer which metrics matter most.</p>
         </div>
-        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Evaluate on</div><div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tag t-indigo">Reach</span><span class="tag t-indigo">Impact</span><span class="tag t-indigo">Confidence</span><span class="tag t-indigo">Effort</span></div></div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:18px"><div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Close with the hierarchy</div><div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:14px"><strong style="color:var(--accent)">★ North Star:</strong> the one number this feature should move</div><div style="font-size:14px"><strong style="color:var(--blue)">L1:</strong> the team-level metrics that feed it</div><div style="font-size:14px"><strong style="color:var(--green)">L2:</strong> the slices you'd watch underneath</div></div></div>
       </div>
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
       <button class="btn-ghost btn-sm" id="mp" onclick="navM(-1)" disabled>← Previous</button>
-      <span id="mlbl" style="font-size:13px;color:var(--text-s)">Step 1 of 5</span>
+      <span id="mlbl" style="font-size:13px;color:var(--text-s)">Step 1 of 4</span>
       <button class="btn btn-sm" id="mn" onclick="navM(1)">Next →</button>
     </div>
 
-    <div class="g2" style="margin-top:24px;align-items:start">
-      <figure class="fig" style="margin:0">
-        <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/136/original/ChatGPT_Image_Sep_9__2026__02_43_08_PM.png?1788945200" alt="5-step metric definition framework" loading="lazy">
-        <figcaption>The five-step metric-definition framework.</figcaption>
-      </figure>
-      <figure class="fig" style="margin:0">
-        <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/137/original/ChatGPT_Image_Sep_9__2026__02_43_01_PM.png?1788945252" alt="Customer journey mapping" loading="lazy">
-        <figcaption>Mapping user behaviours along the customer-journey phases.</figcaption>
-      </figure>
-    </div>
-
-    <a class="toollink" href="https://dsml-vizs.vercel.app/pa-2/5-step-metric-definition-framework-funnel-2/v2/" target="_blank" rel="noopener" style="margin-top:16px">🛠️ Interactive: solve a definition question end-to-end ↗</a>
+    <div class="witty" style="margin-top:24px">🔁 Whatever the feature, the habit is the same: clarify it, pin the goal, walk the user through AAAERR measuring each stage, add guardrails, then summarize — and name the hierarchy on your way out.</div>
 
     <div class="quiz" style="margin-top:28px">
       <div class="qtag">Quiz 4 · Capstone — pick the type &amp; the approach</div>
       <div class="qq">An interviewer says: "YouTube's watch time dropped 8% last week with no obvious cause — how would you investigate?" What type of question is this, and what's the correct approach?</div>
       <div class="qopts">
-        <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>A metric-definition question → apply the 5-step Describe → Goal → Journey → Map → Evaluate framework</button>
+        <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>A metric-definition question → apply the 4-step Clarify → Business Goals → Define Metrics → Summarize framework</button>
         <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>A metric-change question → apply root-cause analysis (rule out bugs/logging first, then internal &amp; external factors)</button>
         <button class="qopt" data-k="C" onclick="pickQ(this,'B')"><span class="qk">C</span>A guesstimate question → estimate YouTube's total market size</button>
         <button class="qopt" data-k="D" onclick="pickQ(this,'B')"><span class="qk">D</span>A product-design question → recommend a new feature to fix it</button>
       </div>
-      <div class="qexp"><b>Answer: B.</b> A metric moving "for no apparent reason" is a metric-change question — essentially RCA. Rule out instrumentation/logging first, then internal factors (time, region, platform, segments, cannibalization) and external ones (competitors, seasonality) — the CRIED/TROPiCS approach. The 5-step framework is for the <em>other</em> type ("what metrics would you use for X?"), so recognising the type first is exactly what interviewers score.</div>
+      <div class="qexp"><b>Answer: B.</b> A metric moving "for no apparent reason" is a metric-change question — essentially RCA. Rule out instrumentation/logging first, then internal factors (time, region, platform, segments, cannibalization) and external ones (competitors, seasonality) — the CRIED/TROPiCS approach. The definition framework is for the <em>other</em> type ("what metrics would you use for X?"), so recognising the type first is exactly what interviewers score.</div>
     </div>
   </div>
 </section>
@@ -733,10 +723,10 @@ a{color:var(--accent);text-decoration:none}
         <span class="tag t-indigo" style="margin-bottom:14px;display:inline-block">Metric definition</span>
         <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
         <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:14px"><strong style="color:var(--accent)">Describe:</strong> A paid post an advertiser shows to a target audience in-feed.</div>
-          <div style="font-size:14px"><strong style="color:var(--blue)">Goal:</strong> Drive advertiser value (clicks/conversions) without wrecking user experience.</div>
-          <div style="font-size:14px"><strong style="color:var(--purple)">Journey → Map:</strong> Awareness (impressions, reach) → Engagement (CTR, likes) → Monetization (ROAS, CPC) → guardrail (hide/report rate).</div>
-          <div style="font-size:14px"><strong style="color:var(--green)">Evaluate:</strong> Rank by reach/impact/confidence/effort; lead with ROAS and CTR as the headline metrics.</div>
+          <div style="font-size:14px"><strong style="color:var(--accent)">Clarify:</strong> A paid post an advertiser shows to a target audience in-feed. Objective: monetization. Beneficiaries: the advertiser, the business, and (if targeting is good) the user.</div>
+          <div style="font-size:14px"><strong style="color:var(--blue)">Business Goals:</strong> User — see relevant content, not spam. Marketer — reach buyers at a workable cost. Business — grow ad revenue without degrading the feed.</div>
+          <div style="font-size:14px"><strong style="color:var(--purple)">Define Metrics (AAAERR):</strong> Awareness (impressions, reach) → Engagement (CTR, likes) → Revenue (ROAS, CPC) → Retention (repeat advertisers). Guardrail: hide/report rate and organic-post engagement.</div>
+          <div style="font-size:14px"><strong style="color:var(--green)">Summarize:</strong> Lead with ROAS as the North Star for this feature, CTR and conversion as L1, and CTR by placement or audience segment as L2.</div>
         </div></div>
       </div>
 
@@ -756,7 +746,7 @@ a{color:var(--accent);text-decoration:none}
         <span class="tag t-amber" style="margin-bottom:14px;display:inline-block">Metric change</span>
         <button class="rev-btn" onclick="toggleR(this)">▶ &nbsp;Show approach</button>
         <div class="rev-body"><div style="background:var(--bg-section);border-radius:var(--r);padding:16px;margin-top:12px;display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:14px"><strong style="color:var(--amber)">Recognise the type:</strong> a metric-change question → RCA, not the 5-step framework.</div>
+          <div style="font-size:14px"><strong style="color:var(--amber)">Recognise the type:</strong> a metric-change question → RCA, not the definition framework.</div>
           <div style="font-size:14px"><strong style="color:var(--accent)">Rule out:</strong> tracking/attribution bug inflating signups?</div>
           <div style="font-size:14px"><strong style="color:var(--blue)">TROPiCS:</strong> Segmentation (are the new signups low-intent?), Region/Platform (one channel spiking?), Cannibalization.</div>
           <div style="font-size:14px"><strong style="color:var(--green)">Diagnose:</strong> likely low-quality acquisition — signups aren't activating/monetizing. Watch L1 activation, not the vanity signup count.</div>
@@ -799,20 +789,19 @@ a{color:var(--accent);text-decoration:none}
           </div>
         </div>
         <div>
-          <h3>5-step definition framework</h3>
+          <h3>4-step definition framework</h3>
           <div class="prow">
-            <div class="pi"><span>1</span> Describe</div>
-            <div class="pi"><span>2</span> Goal</div>
-            <div class="pi"><span>3</span> Journey</div>
-            <div class="pi"><span>4</span> Map</div>
-            <div class="pi"><span>5</span> Evaluate</div>
+            <div class="pi"><span>1</span> Clarify</div>
+            <div class="pi"><span>2</span> Business Goals</div>
+            <div class="pi"><span>3</span> Define Metrics (AAAERR)</div>
+            <div class="pi"><span>4</span> Summarize</div>
           </div>
           <h3>Two question types</h3>
           <div class="prow">
-            <div class="pi"><span>Def</span> "What metrics for X?" → 5-step</div>
+            <div class="pi"><span>Def</span> "What metrics for X?" → 4-step</div>
             <div class="pi"><span>Chg</span> "Why did it move?" → CRIED / TROPiCS</div>
           </div>
-          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:14px;font-size:13.5px;color:#C7D2FE;margin-top:4px">Evaluate metrics on <strong style="color:#fff">Reach · Impact · Confidence · Effort</strong></div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:14px;font-size:13.5px;color:#C7D2FE;margin-top:4px">Always pair success metrics with <strong style="color:#fff">guardrail metrics</strong> — what must not get worse</div>
         </div>
       </div>
     </div>
@@ -825,7 +814,7 @@ a{color:var(--accent);text-decoration:none}
     <div class="lbl">Today's journey in one picture</div>
     <h2 style="margin-bottom:6px">From 40 Charts to One Star and Two Tiers</h2>
     <figure class="fig">
-      <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/225/139/original/ChatGPT_Image_Sep_9__2026__02_47_35_PM.png?1788945497" alt="Today's journey summary" loading="lazy">
+      <img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/248/394/original/Today%E2%80%99s_Story__Charts_to_Clarity.png?1792651356" alt="Today's story — charts to clarity" loading="lazy">
       <figcaption>How a wall of 40 charts becomes a clear three-level metric hierarchy a VP — and an interviewer — would respect.</figcaption>
     </figure>
 
@@ -834,8 +823,8 @@ a{color:var(--accent);text-decoration:none}
       <div class="tw"><div class="twn">1</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">A KPI is a metric you're held accountable to</div><p style="font-size:14px;color:var(--text-s)">Every metric is a data point; a KPI is the one important enough to put on a slide and tie a bonus to.</p></div></div>
       <div class="tw"><div class="twn">2</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Vanity looks impressive; actionable drives a decision</div><p style="font-size:14px;color:var(--text-s)">If a number only ever goes up and points to no action, it's vanity. Actionable metrics can fall — and tell you what to fix.</p></div></div>
       <div class="tw"><div class="twn">3</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Stack metrics into three levels</div><p style="font-size:14px;color:var(--text-s)">One North Star (whole company) → Primary L1 (team/product) → Supporting L2 (a primary sliced by platform/region/segment).</p></div></div>
-      <div class="tw"><div class="twn">4</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Name the question type before you answer</div><p style="font-size:14px;color:var(--text-s)">Definition ("what metrics for X?") → 5-step framework. Change ("why did it move?") → CRIED/TROPiCS. Interviewers score this first.</p></div></div>
-      <div class="tw"><div class="twn">5</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Define metrics with Describe → Goal → Journey → Map → Evaluate</div><p style="font-size:14px;color:var(--text-s)">Walk the user down the funnel, quantify each behaviour, then rank on reach, impact, confidence and effort.</p></div></div>
+      <div class="tw"><div class="twn">4</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Name the question type before you answer</div><p style="font-size:14px;color:var(--text-s)">Definition ("what metrics for X?") → the 4-step framework. Change ("why did it move?") → CRIED/TROPiCS. Interviewers score this first.</p></div></div>
+      <div class="tw"><div class="twn">5</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Define metrics with Clarify → Business Goals → Define Metrics → Summarize</div><p style="font-size:14px;color:var(--text-s)">The same four steps you used for Facebook 'Save' in Lecture 1: clarify the feature, state each stakeholder's goal, walk AAAERR adding guardrails, then summarize and name the hierarchy.</p></div></div>
     </div>
 
     <div style="margin-top:28px;text-align:center;padding:36px;background:var(--accent-wash);border-radius:var(--rm)">
@@ -851,8 +840,8 @@ a{color:var(--accent);text-decoration:none}
 </footer>
 
 <script>
-// 5-step navigator
-var msn=0,mst=5;
+// 4-step navigator
+var msn=0,mst=4;
 function navM(d){
   document.getElementById('ms'+msn).classList.remove('on');
   msn=Math.max(0,Math.min(mst-1,msn+d));
@@ -900,3 +889,5 @@ window.addEventListener('scroll',function(){
 </script>
 </body>
 </html>
+
+</body></html>
